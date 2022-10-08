@@ -4,7 +4,6 @@ import random
 
 sum = 0
 avgr = 0
-
 # Number of Test Cases
 C = random.randint(1,5)
 print(C)
@@ -15,6 +14,6 @@ for j in range(0,C):
     # print("N", N)
     for i in range(0,N):
         print(random.randint(1, 100))
-        sum+=random.randint(1, 100)
+        sum=sum+random.randint(1, 100)
 
     avgr = sum/N
