@@ -18,5 +18,3 @@ for j in range(0,C):
         sum+=random.randint(1, 100)
 
     avgr = sum/N
-    
-    print(avgr)
