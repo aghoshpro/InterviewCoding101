@@ -9,7 +9,7 @@ item = []
 # Number of Test Cases
 C = random.randint(1,5)
 print("C", C)
-print("------------------------LENEVO-------------------------------")
+print("-------------------------------------------------------")
 
 # the number of people in the class
 for j in range(0,C):
