@@ -24,11 +24,11 @@ for j in range(0,C):
     sum = 0
 
     for k in item:
-       print(k)
        if k>avgr:
         count+=1
     
     item = []
-    print("Number of Student > avgr", count)
-    # print("int, float",(count/N)*100,float(count/N)*100)
-    print("--------------------------")
+    print("Number of Student above avg", count)
+    print("{:.3f}%".format(100.0*count/float(N)))
+    count = 0
+    print("-----------------END-----------------")
