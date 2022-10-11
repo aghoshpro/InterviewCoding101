@@ -1,0 +1,30 @@
+import random
+
+sum = 0
+avgr = 0
+count = 0
+item = []
+
+# Number of Test Cases
+C = input()
+
+# the number of people in the class
+if C>= 1 and C<=5:
+    for j in range(0,C):
+        N = input()
+        if N>= 1 and N<=1000:
+            for i in range(0,N):
+                item.append(random.randint(1, 100))
+                sum=sum+item[i]
+
+        avgr = sum/N
+        sum = 0
+
+        for k in item:
+           if k>avgr:
+            count+=1
+        
+        item = []
+        print("{:.3f}%".format(100.0*count/float(N)))
+        count = 0
+  
