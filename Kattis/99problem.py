@@ -8,7 +8,7 @@ res = 0
 
 data = [(f.strip().split("\t")) for f in fileinput.input("Z:\99problem.txt")]
 print(data)
-N = int(data[3][0])
+N = int(data[0][0])
 print("Price of product = " + str(N) + " SEK")
 
 if N>= 1 and N<=10000 and N%100 != 99:
@@ -36,7 +36,18 @@ if N>= 1 and N<=10000 and N%100 != 99:
       else:
          print(N+mask)
    else:
-      print("oops")
+      N_temp = N
+      remainder_N = N_temp % 100
+      print(remainder_N)
+      mask = 99 - remainder_N
+      print(mask)
+      # print(N+mask)
+      # mask = 99 - (N - remainder_N * pow(10, (count-1)))
+      # print("mask", mask)
+      if mask > 50:
+         print(N - (100 - mask))
+      else:
+         print(N+mask)
    
 
    # range_in = remainder_N * pow(10, (count-1))
@@ -44,4 +55,4 @@ if N>= 1 and N<=10000 and N%100 != 99:
    # # diff2 = remainder_N * pow(10, (count-1)) + 
    # range_out = range_in + pow(10, (count-1))
    # print("range", range_in,"<", N, "<", range_out )
-   print("Hurraaaay")
+   print("-------------------------ENDGAME----------------------")
