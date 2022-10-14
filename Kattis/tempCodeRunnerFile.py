@@ -1,1 +1,1 @@
-      # print(N+mask)
+      print(mask)
