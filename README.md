@@ -1,8 +1,6 @@
 # PracticeCoding101
 Contains all of my codes that I have practiced for the coding interviews and learned new things.
 
-## Following are the websites where I have been practising, 
-
 1. [Leetcode](https://leetcode.com/problemset/all/) +3
 2. [HackerRank](https://www.hackerrank.com/)
 3. [ProjectEuler](https://projecteuler.net/about)
