@@ -33,5 +33,4 @@ class Solution(object):
 
     k, expectedNums = removeDuplicates(nums) #function calling
 
-    print(k)
-    print(expectedNums)
+    print(str(k),',','nums =', str(expectedNums))
