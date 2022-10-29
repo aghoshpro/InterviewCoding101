@@ -1,1 +1,1 @@
-  # print(i)
+nums.remove(nums[i+1])
