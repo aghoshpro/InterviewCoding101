@@ -12,7 +12,7 @@ print(X)
 numMAX = max(list(map(int, X))) # string to int
 numMIN = min(list(map(int, X)))
 middle = list(map(int, X))
-print(middle.remove())
+print(middle.remove(numMIN))  # delte the min value
 
 
 # if numMAX <= 100:
