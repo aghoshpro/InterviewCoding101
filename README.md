@@ -7,3 +7,4 @@ Contains all of my codes that I have practiced for the coding interviews and lea
 4. [ProjectEuler](https://projecteuler.net/about)
 5. [Kattis Problem Archive](https://open.kattis.com/) +1
 6. [CodeGolf](https://code.golf/)
+7. [Control Physice Problems](https://controlchallenge.edu.hendeby.se/)
