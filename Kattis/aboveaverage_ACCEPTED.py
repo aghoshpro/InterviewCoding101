@@ -1,4 +1,6 @@
 import fileinput
+import os
+os.system("cls")
 
 sum = 0
 avgr = 0
@@ -6,7 +8,7 @@ count = 0
 item = []
 res = 0    
 
-data = [(f.strip().split("\t")) for f in fileinput.input("Z:\TestAboveAvg.txt")]
+data = [(f.strip().split("\t")) for f in fileinput.input("D:\Git-Space\PracticeCoding101\Kattis\TestAboveAvg.txt")]
 C = int(data[0][0])
 
 # res = [int(ele) for ele in data[10][0].split()] # convert list of strings to list of integer 

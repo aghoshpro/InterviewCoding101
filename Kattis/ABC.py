@@ -1,4 +1,21 @@
-if numMAX <= 100:
+import fileinput
+import os
+os.system("cls")
+
+data = [(f.strip().split("\t")) for f in fileinput.input("D:\Git-Space\PracticeCoding101\Kattis\ABC.txt")]
+
+numSTRING = data[0][0]
+abcSTRING = data[1][0]
+X = numSTRING.split(" ")
+print(X)
+
+numMAX = max(list(map(int, X))) # string to int
+numMIN = min(list(map(int, X)))
+middle = list(map(int, X))
+print(middle.remove())
+
+
+# if numMAX <= 100:
 #     dict = {'A':numMIN,
 #             'B': None,
 #             'C':numMAX}
@@ -30,3 +47,6 @@ if numMAX <= 100:
 #         print(dict['C'],dict['B'],dict['A'])
 # else:
 #     print("Please enter a number less then 100")
+
+# https://stackoverflow.com/questions/7368789/convert-all-strings-in-a-list-to-int
+    
