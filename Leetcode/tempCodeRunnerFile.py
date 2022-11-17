@@ -1,1 +1,3 @@
-nums.remove(nums[i+1])
+    k, expectedNums = removeDuplicates(nums) #function calling
+
+    print(str(k),',','nums =', str(expectedNums))
