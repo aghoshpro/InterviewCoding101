@@ -1,13 +1,13 @@
 import fileinput
-# line = input()
-# print(line)
-# data = [(f.strip().split(" ")) for f in line]
 
-data = [(f.strip().split("\t")) for f in fileinput.input("Z:\addSum.txt")]
-a = int(data[0][0])
+data = [(f.strip().split("\t")) for f in fileinput.input("Z:\Git_PhD\PracticeCoding101\Kattis\sumSUM.txt")]
 
-# a = int(data[0][0])
-# b = int(data[1][0])
-# b = int(b)
+# Convert the data into integer
+dataINT = list(map(int, data[0][0].split(" ")))
 
-print(a)
+a = max(dataINT)
+b = min(dataINT)
+
+sum = a + b
+
+print(sum)
