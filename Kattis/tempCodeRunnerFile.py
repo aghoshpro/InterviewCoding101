@@ -1,6 +1,4 @@
-num01 = dataINT[0]
-# num02 = dataINT[1]
-# num03 = dataINT[2]
-
-# result = num01 * num02 * num03
-# print(result)
+i = 2
+# while(i>len(data)):
+#     remain = GBmonth - data[i][0]
+#     i = i+1
