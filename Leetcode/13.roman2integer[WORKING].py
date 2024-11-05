@@ -9,7 +9,7 @@ class Solution(object):
 value = 0
 romanAlpha= {'I':1, 'V':5, 'X':10, 'L':50, 'C':100,'D':500, 'M':1000} 
 romanNum = "MCMXCIV"
-# print(romanAlpha["I"])
+print(romanAlpha["I"])
 
 for r in romanNum:
     for k in romanAlpha:
