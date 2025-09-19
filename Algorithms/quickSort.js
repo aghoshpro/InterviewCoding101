@@ -1,0 +1,395 @@
+import React, { useState, useEffect } from 'react';
+
+const QuickSortVisualization = () => {
+  const [array, setArray] = useState([]);
+  const [pivotIndex, setPivotIndex] = useState(null);
+  const [leftPointer, setLeftPointer] = useState(null);
+  const [rightPointer, setRightPointer] = useState(null);
+  const [sortedIndices, setSortedIndices] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [steps, setSteps] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1000); // milliseconds
+  const [language, setLanguage] = useState('python');
+  const [codeVisible, setCodeVisible] = useState(true);
+
+  // Generate new random array
+  const generateArray = () => {
+    const newArray = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
+    setArray(newArray);
+    setSortedIndices([]);
+    setPivotIndex(null);
+    setLeftPointer(null);
+    setRightPointer(null);
+    setCurrentStep(0);
+    
+    // Generate all steps for the animation
+    const newSteps = [];
+    const arrayCopy = [...newArray];
+    const sortingSteps = [];
+    
+    quickSortWithSteps(arrayCopy, 0, arrayCopy.length - 1, sortingSteps);
+    setSteps(sortingSteps);
+  };
+
+  // QuickSort implementation that records steps
+  const quickSortWithSteps = (arr, low, high, steps) => {
+    if (low < high) {
+      // Record state before partition
+      steps.push({
+        array: [...arr],
+        pivotIndex: high,
+        leftPointer: low,
+        rightPointer: low,
+        message: `Starting partition with pivot = ${arr[high]}`
+      });
+      
+      // Partition and get pivot
+      const pivotIndex = partition(arr, low, high, steps);
+      
+      // Record state after partition
+      steps.push({
+        array: [...arr],
+        pivotIndex: null,
+        leftPointer: null,
+        rightPointer: null,
+        message: `Pivot ${arr[pivotIndex]} placed at correct position ${pivotIndex}`,
+        completedIndices: [pivotIndex]
+      });
+      
+      // Recursively sort elements before and after partition
+      quickSortWithSteps(arr, low, pivotIndex - 1, steps);
+      quickSortWithSteps(arr, pivotIndex + 1, high, steps);
+    } else if (low === high) {
+      // Single element is already sorted
+      steps.push({
+        array: [...arr],
+        pivotIndex: null,
+        leftPointer: null,
+        rightPointer: null,
+        message: `Element at index ${low} is in its sorted position`,
+        completedIndices: [low]
+      });
+    }
+  };
+
+  // Partition function that records steps
+  const partition = (arr, low, high, steps) => {
+    const pivot = arr[high];
+    let i = low - 1;
+    
+    for (let j = low; j < high; j++) {
+      // Record comparison step
+      steps.push({
+        array: [...arr],
+        pivotIndex: high,
+        leftPointer: i + 1,
+        rightPointer: j,
+        message: `Comparing ${arr[j]} with pivot ${pivot}`
+      });
+      
+      if (arr[j] <= pivot) {
+        i++;
+        
+        if (i !== j) {
+          // Record swap step
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+          steps.push({
+            array: [...arr],
+            pivotIndex: high,
+            leftPointer: i,
+            rightPointer: j,
+            message: `Swap ${arr[i]} and ${arr[j]}`
+          });
+        }
+      }
+    }
+    
+    // Swap pivot into its final position
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+    steps.push({
+      array: [...arr],
+      pivotIndex: i + 1,
+      leftPointer: i + 1,
+      rightPointer: high,
+      message: `Swap pivot ${pivot} with ${arr[i + 1]}`
+    });
+    
+    return i + 1;
+  };
+
+  // Effect for auto-playing animation
+  useEffect(() => {
+    let timer;
+    if (isPlaying && currentStep < steps.length) {
+      timer = setTimeout(() => {
+        setCurrentStep(prev => prev + 1);
+      }, speed);
+    } else if (currentStep >= steps.length) {
+      setIsPlaying(false);
+    }
+    
+    return () => clearTimeout(timer);
+  }, [isPlaying, currentStep, steps, speed]);
+
+  // Update visualization based on current step
+  useEffect(() => {
+    if (steps.length === 0 || currentStep >= steps.length) return;
+    
+    const step = steps[currentStep];
+    setArray(step.array);
+    setPivotIndex(step.pivotIndex);
+    setLeftPointer(step.leftPointer);
+    setRightPointer(step.rightPointer);
+    
+    if (step.completedIndices) {
+      setSortedIndices(prev => [...prev, ...step.completedIndices]);
+    }
+  }, [currentStep, steps]);
+
+  // Start the visualization on component mount
+  useEffect(() => {
+    generateArray();
+  }, []);
+
+  // Play/pause control
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  // Reset to beginning
+  const reset = () => {
+    setIsPlaying(false);
+    setCurrentStep(0);
+    setSortedIndices([]);
+  };
+
+  // Step forward manually
+  const stepForward = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  // Step backward manually
+  const stepBackward = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
+  // Change speed
+  const handleSpeedChange = (e) => {
+    setSpeed(2000 - parseInt(e.target.value, 10));
+  };
+
+  const pythonCode = `def quick_sort(arr, low, high):
+    if low < high:
+        # Find the partition index
+        pivot_index = partition(arr, low, high)
+        
+        # Recursively sort the sub-arrays
+        quick_sort(arr, low, pivot_index - 1)
+        quick_sort(arr, pivot_index + 1, high)
+    
+    return arr
+
+def partition(arr, low, high):
+    # Choose the rightmost element as pivot
+    pivot = arr[high]
+    
+    # Index of smaller element
+    i = low - 1
+    
+    for j in range(low, high):
+        # If current element is smaller than or equal to pivot
+        if arr[j] <= pivot:
+            # Increment index of smaller element
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    
+    # Swap the pivot element with the element at i+1
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    
+    return i + 1`;
+
+  const javascriptCode = `function quickSort(arr, low = 0, high = arr.length - 1) {
+    if (low < high) {
+        // Find the partition index
+        const pivotIndex = partition(arr, low, high);
+        
+        // Recursively sort the sub-arrays
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+    
+    return arr;
+}
+
+function partition(arr, low, high) {
+    // Choose the rightmost element as pivot
+    const pivot = arr[high];
+    
+    // Index of smaller element
+    let i = low - 1;
+    
+    for (let j = low; j < high; j++) {
+        // If current element is smaller than or equal to pivot
+        if (arr[j] <= pivot) {
+            // Increment index of smaller element
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+    
+    // Swap the pivot element with the element at i+1
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+    
+    return i + 1;
+}`;
+
+  const getBarColor = (index) => {
+    if (sortedIndices.includes(index)) return 'bg-green-500';
+    if (index === pivotIndex) return 'bg-red-500';
+    if (index === leftPointer) return 'bg-blue-500';
+    if (index === rightPointer) return 'bg-purple-500';
+    return 'bg-gray-400';
+  };
+  
+  const maxValue = Math.max(...(array.length ? array : [1]));
+
+  return (
+    <div className="max-w-4xl mx-auto p-4 flex flex-col gap-6 bg-white rounded-lg shadow">
+      <h1 className="text-2xl font-bold text-center">QuickSort Visualization</h1>
+      
+      {/* Controls */}
+      <div className="flex flex-wrap gap-3 justify-center">
+        <button 
+          onClick={generateArray}
+          className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+        >
+          New Array
+        </button>
+        <button 
+          onClick={togglePlay}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
+        >
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+        <button 
+          onClick={reset}
+          className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-500"
+        >
+          Reset
+        </button>
+        <button 
+          onClick={stepBackward}
+          className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500"
+        >
+          Step Back
+        </button>
+        <button 
+          onClick={stepForward}
+          className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500"
+        >
+          Step Forward
+        </button>
+      </div>
+      
+      {/* Speed control */}
+      <div className="flex items-center justify-center gap-3">
+        <span>Speed:</span>
+        <input 
+          type="range" 
+          min="200" 
+          max="1800" 
+          value={2000 - speed} 
+          onChange={handleSpeedChange}
+          className="w-48"
+        />
+      </div>
+      
+      {/* Language selector */}
+      <div className="flex justify-center gap-4">
+        <button 
+          onClick={() => setLanguage('python')}
+          className={`px-3 py-1 rounded ${language === 'python' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+        >
+          Python
+        </button>
+        <button 
+          onClick={() => setLanguage('javascript')}
+          className={`px-3 py-1 rounded ${language === 'javascript' ? 'bg-yellow-600 text-white' : 'bg-gray-200'}`}
+        >
+          JavaScript
+        </button>
+        <button 
+          onClick={() => setCodeVisible(!codeVisible)}
+          className="px-3 py-1 bg-gray-300 rounded"
+        >
+          {codeVisible ? 'Hide Code' : 'Show Code'}
+        </button>
+      </div>
+      
+      {/* Visualization area */}
+      <div className="visualization mt-4">
+        <div className="flex items-end justify-center h-64 gap-1 p-4 border rounded-lg bg-gray-50">
+          {array.map((value, index) => (
+            <div
+              key={index}
+              className={`width-8 ${getBarColor(index)} transition-all duration-200`}
+              style={{
+                height: `${(value / maxValue) * 100}%`,
+                width: `${90 / array.length}%`,
+                minWidth: '20px'
+              }}
+            >
+              <div className="text-center text-xs">{value}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+          <p className="font-medium text-center">
+            {currentStep < steps.length ? steps[currentStep].message : 'Sorting complete!'}
+          </p>
+          <p className="text-center text-sm text-gray-600 mt-2">
+            Step {currentStep + 1} of {steps.length}
+          </p>
+        </div>
+      </div>
+      
+      {/* Legend */}
+      <div className="flex flex-wrap justify-center gap-4 mt-2">
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-red-500 mr-2"></div>
+          <span>Pivot</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-blue-500 mr-2"></div>
+          <span>Left Pointer</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-purple-500 mr-2"></div>
+          <span>Right Pointer</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 bg-green-500 mr-2"></div>
+          <span>Sorted Position</span>
+        </div>
+      </div>
+      
+      {/* Code */}
+      {codeVisible && (
+        <div className="mt-4 p-4 bg-gray-800 text-white rounded-lg overflow-x-auto">
+          <pre className="text-sm">
+            <code>
+              {language === 'python' ? pythonCode : javascriptCode}
+            </code>
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default QuickSortVisualization;
