@@ -18,4 +18,10 @@ Contains all of my codes that I have practiced for the coding interviews and lea
 |8. |[Codepen](https://codepen.io/)|
 |9. |[Codechef](https://www.codechef.com/practice)|
 |10.|[Devpost](https://devpost.com/)|
-|11.|[Exercism](https://exercism.org/)|
+|11.|[StrataScratch](https://www.stratascratch.com/)|
+|12.|[DataDriven](https://datadriven.io/)|
+|13.|[Exercism](https://exercism.org/)|
+|14.|[PGExercises](https://pgexercises.com/)|
+|15.|[AI Engineering from Scratch](https://aiengineeringfromscratch.com/)|
+
+
